@@ -1,10 +1,9 @@
 #!/bin/bash
 
-FILE="$1"
-COLS="$2"
-SIZE=$3
+COLS="$1"
+FILE="$2"
+SIZE=50
 
-[ -z "$SIZE" ] && SIZE=100
 [ -z "$COLS" ] && COLS="2"
 
 TMP_FILE="./tmp/tmp.file.data"
@@ -32,5 +31,6 @@ while :; do
 
    START=$(($START+$SIZE))   
 done
+
 
 exit 0
