@@ -10,6 +10,33 @@ EXEC_FILE="./tmp/exec.sh"
 TEMPLATE_FILE="template.sh"
 
 
+[ -t 1 ] && STREAM="$FILE" || STREAM="-"
+CONTENTS=
+CNT=1
+SIZE=50
+FIRST_COLUMN_IS_EMPTY=
+
+
+# -------------------------------------------------------
+
+function get_long_options(){
+   local ARGUMENTS=("$@")
+   local index=0
+
+   for ARG in "$@"; do
+      index=$(($index+1));
+      case $ARG in
+         -s) FIRST_COLUMN_IS_EMPTY="x";;
+      esac
+   done
+}
+
+
+# ----------------------   MAIN   ------------------------
+
+get_long_options $@
+
+
 OPT=
 for COL in $COLS; do
    [ ! -z "$OPT" ] && OPT=", $OPT "
@@ -22,13 +49,9 @@ sed "s|%PLOT%|$OPT|g" $TEMPLATE_FILE > $EXEC_FILE
 chmod +x $EXEC_FILE
 
 
-[ -t 1 ] && STREAM="$FILE" || STREAM="-"
-CONTENTS=
-CNT=1
-SIZE=50
-
 
 while read LINE; do
+   [ ! -z "$FIRST_COLUMN_IS_EMPTY" ] && LINE="$CNT $LINE"
    CONTENTS="$CONTENTS\n$LINE"
    MOD=$(($CNT%SIZE))
    if [ $MOD -eq 0 ]; then
