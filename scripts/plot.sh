@@ -46,7 +46,7 @@ get_long_options "$@"
 OPT=""
 for COL in $COLS; do
    [ ! -z "$OPT" ] && OPT="$OPT, "
-   OPT="$OPT '$TMP_FILE' using 1:$COL with lines"
+   OPT="$OPT '$TMP_FILE' using 1:$COL w filledcurves above y1=0.0 ls $COL"
 done
 OPT="plot $OPT"
 
