@@ -2,10 +2,9 @@
 
 FOLDER="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-COLS="$1"
-FILE="$2"
+COLS=
+FILE=
 
-[ -z "$COLS" ] && COLS="2"
 
 TMP_FILE="$FOLDER/tmp/tmp.file.data"
 EXEC_FILE="$FOLDER/tmp/exec.sh"
@@ -16,7 +15,7 @@ TEMPLATE_FILE="$FOLDER/template.sh"
 CONTENTS=
 CNT=1
 SIZE=50
-FIRST_COLUMN_IS_EMPTY=
+ADD_FIRST_COLUMN=
 
 
 # -------------------------------------------------------
@@ -28,7 +27,9 @@ function get_long_options(){
    for ARG in "$@"; do
       index=$(($index+1));
       case $ARG in
-         -s) FIRST_COLUMN_IS_EMPTY="x";;
+         -a) ADD_FIRST_COLUMN="x";;
+         -c) COLS="${ARGUMENTS[index]}";;
+         -b) FILE="${ARGUMENTS[index]}";;
       esac
    done
 }
@@ -36,12 +37,13 @@ function get_long_options(){
 
 # ----------------------   MAIN   ------------------------
 
-get_long_options $@
+get_long_options "$@"
 
+[ -z "$COLS" ] && COLS="2"
 
-OPT=
+OPT=""
 for COL in $COLS; do
-   [ ! -z "$OPT" ] && OPT=", $OPT "
+   [ ! -z "$OPT" ] && OPT="$OPT, "
    OPT="$OPT '$TMP_FILE' using 1:$COL with lines"
 done
 OPT="plot $OPT"
@@ -53,7 +55,7 @@ chmod +x $EXEC_FILE
 
 
 while read LINE; do
-   [ ! -z "$FIRST_COLUMN_IS_EMPTY" ] && LINE="$CNT $LINE"
+   [ ! -z "$ADD_FIRST_COLUMN" ] && LINE="$CNT $LINE"
    CONTENTS="$CONTENTS\n$LINE"
    MOD=$(($CNT%SIZE))
    if [ $MOD -eq 0 ]; then
