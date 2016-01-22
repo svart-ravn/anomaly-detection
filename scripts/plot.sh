@@ -4,7 +4,7 @@ FOLDER="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 COLS=
 FILE=
-
+SIZE=
 
 TMP_FILE="$FOLDER/tmp/tmp.file.data"
 EXEC_FILE="$FOLDER/tmp/exec.sh"
@@ -14,7 +14,6 @@ TEMPLATE_FILE="$FOLDER/template.sh"
 [ -t 1 ] && STREAM="$FILE" || STREAM="-"
 CONTENTS=
 CNT=1
-SIZE=50
 ADD_FIRST_COLUMN=
 
 
@@ -30,6 +29,7 @@ function get_long_options(){
          -a) ADD_FIRST_COLUMN="x";;
          -c) COLS="${ARGUMENTS[index]}";;
          -b) FILE="${ARGUMENTS[index]}";;
+         -s) SIZE="${ARGUMENTS[index]}";;
       esac
    done
 }
@@ -40,6 +40,8 @@ function get_long_options(){
 get_long_options "$@"
 
 [ -z "$COLS" ] && COLS="2"
+[ -z "$SIZE" ] && COLS=50
+
 
 OPT=""
 for COL in $COLS; do
