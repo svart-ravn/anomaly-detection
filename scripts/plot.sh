@@ -1,13 +1,15 @@
 #!/bin/bash
 
+FOLDER="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
 COLS="$1"
 FILE="$2"
 
 [ -z "$COLS" ] && COLS="2"
 
-TMP_FILE="./tmp/tmp.file.data"
-EXEC_FILE="./tmp/exec.sh"
-TEMPLATE_FILE="template.sh"
+TMP_FILE="$FOLDER/tmp/tmp.file.data"
+EXEC_FILE="$FOLDER/tmp/exec.sh"
+TEMPLATE_FILE="$FOLDER/template.sh"
 
 
 [ -t 1 ] && STREAM="$FILE" || STREAM="-"
@@ -56,8 +58,10 @@ while read LINE; do
    MOD=$(($CNT%SIZE))
    if [ $MOD -eq 0 ]; then
       echo -e "$CONTENTS" > $TMP_FILE
-      ./$EXEC_FILE
-      eog ./tmp/file.png
+      
+      eval `$EXEC_FILE`
+
+      eog file.png
       CNT=1
       CONTENTS=
    else
