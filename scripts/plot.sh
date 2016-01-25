@@ -55,7 +55,6 @@ sed "s|%PLOT%|$OPT|g" $TEMPLATE_FILE > $EXEC_FILE
 chmod +x $EXEC_FILE
 
 
-
 while read LINE; do
    [ ! -z "$ADD_FIRST_COLUMN" ] && LINE="$CNT $LINE"
    CONTENTS="$CONTENTS\n$LINE"
