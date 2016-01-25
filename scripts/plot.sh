@@ -36,6 +36,7 @@ function get_long_options(){
 
 
 # ----------------------   MAIN   ------------------------
+mkdir -p "FOLDER/tmp"
 
 get_long_options "$@"
 
